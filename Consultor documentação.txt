@@ -1,0 +1,13 @@
+API - Será criada com .net core
+
+vai utilizar o Pomelo Entity Framework
+dotnet add package Pomelo.EntityFrameworkCore.MySql --version 2.0.1
+
+Criando arquivo de contexto para acesso ao banco de dados
+
+
+https://github.com/PomeloFoundation/Pomelo.EntityFrameworkCore.MySql/blob/master/README.md#getting-started
+
+dotnet ef dbcontext scaffold "Server=localhost;User Id=root;Password=root;Database=consultteam" "Pomelo.EntityFrameworkCore.MySql" -c MyDbContext
+
+https://www.youtube.com/watch?v=0tXnUrAx0nE&list=PLLTWMs7ZCUZMq-C1B4LwSTXgfrQl5gdis
