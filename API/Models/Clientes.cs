@@ -14,7 +14,7 @@ namespace API
         }
 
         public uint IdCliente { get; set; }
-        public uint? DesCliente { get; set; }
+        public string DesCliente { get; set; }
         public uint? NumCnpj { get; set; }
         public DateTime? DatRegistro { get; set; }
         public uint? IdUsuario { get; set; }

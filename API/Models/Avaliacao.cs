@@ -10,8 +10,8 @@ namespace API
         public uint? IdCliente { get; set; }
         public string DesAvaliacao { get; set; }
         public uint? NumRating { get; set; }
-        public uint? DatRegistro { get; set; }
-        public uint? DatAlteracao { get; set; }
+        public DateTime? DatRegistro { get; set; }
+        public DateTime? DatAlteracao { get; set; }
         public uint? IdUsuario { get; set; }
 
         public Clientes IdClienteNavigation { get; set; }

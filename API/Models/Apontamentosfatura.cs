@@ -9,7 +9,7 @@ namespace API
         public uint IdApontamento { get; set; }
         public uint IdFatura { get; set; }
         public double? NumValorApontamento { get; set; }
-        public uint? DatRegistro { get; set; }
+        public DateTime? DatRegistro { get; set; }
         public uint? IdUsuario { get; set; }
 
         public Apontamentos IdApontamentoNavigation { get; set; }

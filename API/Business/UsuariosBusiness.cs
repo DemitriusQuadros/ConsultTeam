@@ -7,11 +7,13 @@ using API;
 namespace API.Business
 {
     // Classe que representa o cadastro dos usuarios
-    public partial class UsuarioCadastro
+    public partial class UsuarioCadastro : ICadastro
     {
-        public string nome;
-        public string email;
-        public string senha;
+        public UInt32 Id { get; set; }
+        public uint IdUsuario { get; set; }
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Senha { get; set; }
     }
 
     // Classe que representa o Login do usuario
@@ -22,7 +24,7 @@ namespace API.Business
     }
 
     // Classe de execução das regras de negócio dos usuarios
-    public class UsuariosBusiness
+    public class UsuariosBusiness : IBusiness
     {
        public bool Login(Login login)
         {
@@ -41,43 +43,95 @@ namespace API.Business
 
         }
 
-        public List<string> BuscarUsuarios()
+        public List<ICadastro> Buscar()
         {
             MyDbContext contexto = new MyDbContext();
-            List<Usuarios> usuarios = new List<Usuarios>();
+            List<ICadastro> usuarios = new List<ICadastro>();
 
-            usuarios = contexto.Usuarios.ToList();
-            return (from x in usuarios select x.DesUsuario).ToList();
+            foreach (var u in contexto.Usuarios.ToList())
+            {
+                usuarios.Add(
+                    new UsuarioCadastro 
+                    {
+                        Id = u.IdUsuario,
+                        Nome = u.DesUsuario,
+                        Email = u.DesEmail,
+                        Senha = u.DesSenha
+                    }
+                );                
+            }
+
+            return usuarios;
         }
 
-        public string BuscarUsuarios(int id)
+        public ICadastro Buscar(uint id)
+        {
+            MyDbContext contexto = new MyDbContext();
+            Usuarios u = contexto.Usuarios.Where(x => x.IdUsuario == id).FirstOrDefault();
+            if (u != null)
+            {   
+                var usuario = new UsuarioCadastro
+                {
+                    Id = u.IdUsuario,
+                    Nome = u.DesUsuario,
+                    Email = u.DesEmail,
+                    Senha = u.DesSenha
+                };
+                return usuario;
+
+            }
+            else return null;
+        }
+        public bool Deletar(uint id)
         {
             MyDbContext contexto = new MyDbContext();
             Usuarios usuario = contexto.Usuarios.Where(x => x.IdUsuario == id).FirstOrDefault();
-            return usuario.DesUsuario;
+            if (usuario != null)
+            {
+                contexto.Usuarios.Remove(usuario);
+                contexto.SaveChanges();
+                return true;
+            }
+            else return true;
         }
-        public bool Deletar(int id)
+
+        public void Alterar(ICadastro c)
         {
+            var usuario = (UsuarioCadastro) c;
             MyDbContext contexto = new MyDbContext();
-            Usuarios usuario = contexto.Usuarios.Where(x => x.IdUsuario == id).FirstOrDefault();
+            var cadastro = contexto.Usuarios.Where(x => x.IdUsuario == usuario.Id).FirstOrDefault();
 
-            contexto.
-
+            if (cadastro != null)
+            {
+                cadastro.DesEmail = usuario.Email;
+                cadastro.DesSenha = usuario.Senha;
+                cadastro.DesUsuario = usuario.Nome;
+                cadastro.DatAlteracao = DateTime.Now;
+                cadastro.IdUsuario = usuario.IdUsuario;
+                contexto.Usuarios.Update(cadastro);
+                contexto.SaveChanges();
+            }
+            else
+            {
+                Cadastrar(c);
+            }
         }
-        public void Cadastrar(UsuarioCadastro usuarioCadastro)
+        public void Cadastrar(ICadastro c)
         {
+            var usuario = (UsuarioCadastro) c;
             try
             {
-                ValidarUsuarioCadastro(usuarioCadastro);
-                Usuarios usuario = new Usuarios();
-                usuario.DesUsuario = usuarioCadastro.nome;
-                usuario.DatRegistro = DateTime.Now;
-                usuario.DatAlteracao = DateTime.Now;
-                usuario.DesSenha = usuarioCadastro.senha;
-                usuario.DesEmail = usuarioCadastro.email;
+                ValidarUsuarioCadastro(usuario);
+                Usuarios cadastro = new Usuarios();
+                cadastro.DesUsuario = usuario.Nome;
+                cadastro.DatRegistro = DateTime.Now;
+                cadastro.DatAlteracao = DateTime.Now;
+                cadastro.DesSenha = usuario.Senha;
+                cadastro.DesEmail = usuario.Email;
+                cadastro.IdUsuario = usuario.IdUsuario;
 
                 MyDbContext contexto = new MyDbContext();
-                contexto.Add(usuario);
+                contexto.Add(cadastro);
                 contexto.SaveChanges();
 
             }
@@ -89,9 +143,9 @@ namespace API.Business
 
         public void ValidarUsuarioCadastro(UsuarioCadastro usuarioCadastro)
         {
-            if (String.IsNullOrEmpty(usuarioCadastro.nome)) throw new Exception("Nome de usuário errado");         
-            if (String.IsNullOrEmpty(usuarioCadastro.email)) throw new Exception("Email do usuario não informado");
-            if (String.IsNullOrEmpty(usuarioCadastro.senha)) throw new Exception("Senha do usuario não informada");
+            if (String.IsNullOrEmpty(usuarioCadastro.Nome)) throw new Exception("Nome de usuário errado");         
+            if (String.IsNullOrEmpty(usuarioCadastro.Email)) throw new Exception("Email do usuario não informado");
+            if (String.IsNullOrEmpty(usuarioCadastro.Senha)) throw new Exception("Senha do usuario não informada");
         }
  
 

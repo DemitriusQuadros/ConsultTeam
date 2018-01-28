@@ -14,17 +14,17 @@ namespace API.Controllers
         // GET api/values
         [HttpGet]
         [Route("Get")]
-        public IEnumerable<string> Get()
+        public List<ICadastro> Get()
         {
-            return usuariosBusiness.BuscarUsuarios();
+            return usuariosBusiness.Buscar();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         [Route("Get/{id}")]
-        public string Get(int id)
+        public ICadastro Get(uint id)
         {
-            return usuariosBusiness.BuscarUsuarios(id);
+            return usuariosBusiness.Buscar(id);
         }
 
 
@@ -64,12 +64,14 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public void Put(int id)
         {
+        
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(uint id)
         {
+            usuariosBusiness.Deletar(id);
         }
     }
 }
