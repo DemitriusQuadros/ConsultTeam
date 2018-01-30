@@ -364,6 +364,8 @@ namespace API
 
                 entity.Property(e => e.NumValorTotal).HasColumnName("numValorTotal");
 
+                entity.Property(e => e.SitFatura).HasColumnName("sitFatura");
+
                 entity.HasOne(d => d.IdClienteNavigation)
                     .WithMany(p => p.Faturas)
                     .HasForeignKey(d => d.IdCliente)

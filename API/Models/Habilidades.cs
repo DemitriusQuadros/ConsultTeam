@@ -11,7 +11,7 @@ namespace API
         }
 
         public uint IdHabilidades { get; set; }
-        public uint? DesHabilidade { get; set; }
+        public string DesHabilidade { get; set; }
         public DateTime? DatRegistro { get; set; }
         public uint? IdUsuario { get; set; }
 

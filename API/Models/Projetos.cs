@@ -15,7 +15,7 @@ namespace API
         public uint IdConsultor { get; set; }
         public uint IdGerente { get; set; }
         public uint IdCliente { get; set; }
-        public uint? DesProjeto { get; set; }
+        public string DesProjeto { get; set; }
         public DateTime? DatRegistro { get; set; }
         public DateTime? DatAlteracao { get; set; }
         public uint? IdUsuario { get; set; }

@@ -102,6 +102,7 @@ CREATE TABLE FATURAS (
   datRegistro DATETIME NULL,
   datAlteracao DATETIME NULL,
   idUsuario INTEGER UNSIGNED NULL,
+  sitFatura VARCHAR(1) NULL
   PRIMARY KEY(idFatura)
  );
 
